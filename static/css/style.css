@@ -1,0 +1,27 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center ;
+}
+.error_text { 
+    color: #DD2222;
+}
+
+.list_item{ 
+    color: #888888;
+    height:20vmin;
+    text-align: left;
+}
+
+.remote_button{ 
+  margin:1vmin;
+  width: 20vmin;
+  height:10vmin;
+}
+
+.tall-item{ 
+  font-size=20px;
+  height = 50px;
+}
