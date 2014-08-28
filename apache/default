@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /home/pi/workspace/rplay
+
+	WSGIScriptAlias / /home/pi/workspace/rplay/main.py
+	
+	Alias /static /home/pi/workspace/rplay/static
+
+	<Directory "/home/pi/workspace/rplay">
+		Options FollowSymLinks
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory "/home/pi/workspace/rplay/bin">
+		Options FollowSymLinks
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory "/home/pi/workspace/rplay/static">
+		Options -Indexes 
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
