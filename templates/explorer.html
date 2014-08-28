@@ -1,0 +1,29 @@
+{% extends "public-base.html" %}
+
+{% block head %}
+    <title>Explorer</title>
+{% endblock %}
+
+{% block content %}
+
+<ul class="list-group">
+{% for item in dir_tup %}
+    <li class="list-group-item tall-item">
+        <a  href="/explorer?path={{ item[1] }}/">{{ item[0] }}</a>
+        <span class="glyphicon glyphicon-folder-open pull-right"></span>
+    </li>
+{% endfor %}
+</ul>
+
+</br>
+
+<ul class="list-group">
+{% for item in video_tup %}
+    <li class="list-group-item tall-item">
+        <a  href="/explorer?path={{ item[1] }}/">{{ item[0] }}</a>
+        <span class="glyphicon glyphicon-film pull-right"></span>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

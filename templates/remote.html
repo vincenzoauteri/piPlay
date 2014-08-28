@@ -1,0 +1,41 @@
+{% extends "public-base.html" %}
+{% block head %}
+    <title>Remote</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="starter-template">
+<form action="/remote" method="POST" enctype="multipart/form-data">             
+  <div>
+    <button class="remote_button" type="submit" name="input" value="pause">
+      <span class="glyphicon glyphicon-play"></span>
+      /
+      <span class="glyphicon glyphicon-pause"></span>
+    </button>                  
+    <button class="remote_button" type="submit" name="input" value="stop">
+      <span class="glyphicon glyphicon-stop"></span>
+      </button>                   
+  </div>
+  <div>
+      <button class="remote_button" type="submit" name="input" value="previous">
+      <span class="glyphicon glyphicon-step-backward"></span>
+      </button>                   
+
+      <button class="remote_button" type="submit" name="input" value="next">                 
+      <span class="glyphicon glyphicon-step-forward"></span>
+      </button>                   
+  </div>
+  <div>
+      <button class="remote_button" type="submit" name="input" value="rwnd30">
+      <span class="glyphicon glyphicon-backward"></span>
+      </button>                   
+      <button class="remote_button" type="submit" name="input" value="ffwd30">
+      <span class="glyphicon glyphicon-forward"></span>
+      </button>                   
+  </div>
+  
+</form> 
+</div>
+
+{% endblock %}
