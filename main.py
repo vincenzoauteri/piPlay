@@ -39,6 +39,7 @@ def play():
 routes = [
     ('/', FrontPageHandler),
     ('/explorer',ExplorerHandler),
+    ('/player',VideoPlayerHandler),
     ('/remote',RemoteHandler)
     ]
 

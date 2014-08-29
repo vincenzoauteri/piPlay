@@ -1,0 +1,6 @@
+bin/
+*.pyc
+secret.py
+test.py
+testkey.py
+videos

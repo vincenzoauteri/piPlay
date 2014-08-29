@@ -9,8 +9,8 @@
 <ul class="list-group">
 {% for item in dir_tup %}
     <li class="list-group-item tall-item">
-        <a  href="/explorer?path={{ item[1] }}/">{{ item[0] }}</a>
-        <span class="glyphicon glyphicon-folder-open pull-right"></span>
+        <span class="glyphicon glyphicon-folder-open pull-left"></span>
+        <a  href="/explorer?path={{ item[1] }}/">    {{ item[0] }}</a>
     </li>
 {% endfor %}
 </ul>
@@ -20,8 +20,18 @@
 <ul class="list-group">
 {% for item in video_tup %}
     <li class="list-group-item tall-item">
-        <a  href="/explorer?path={{ item[1] }}/">{{ item[0] }}</a>
-        <span class="glyphicon glyphicon-film pull-right"></span>
+        <span class="glyphicon glyphicon-film pull-left"></span>
+        <a  href="/explorer?path={{ item[1] }}/">    {{ item[0] }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+
+<ul class="list-group">
+{% for item in video_tup %}
+    <li class="list-group-item tall-item">
+        <span class="glyphicon glyphicon-film pull-left"></span>
+        <a  href="/player?video=/{{ item[1] }}">    {{ item[0] }}</a>
     </li>
 {% endfor %}
 </ul>

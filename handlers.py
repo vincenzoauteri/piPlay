@@ -80,7 +80,7 @@ class FrontPageHandler(Handler):
 
     def render_front(self, entries={}):
         """utility function used to render the front page"""
-        self.render('index.html')
+        self.redirect('/explorer')
 
     def get(self):
         """function called when the front page is requested"""
@@ -91,15 +91,18 @@ class ExplorerHandler(Handler):
     def get(self):
         local_path = urllib.url2pathname(self.request.get("path"))
 
+        logging.error(local_path)
         if local_path == '' :
             local_path = "videos/"
 
         try:
             os_path=os.path.join(os.path.dirname(__file__),local_path)
+            logging.error(os_path)
             file_path =  os_path[:-1]
             if os.path.isfile(file_path) is True:
                 logging.error("isfile!")
                 if is_video(file_path) is True:
+                    #self.redirect(file_path)
                     player.start(file_path)
                     self.render("remote.html");
                     return   
@@ -166,6 +169,10 @@ class RemoteHandler(Handler):
 
       self.redirect("/remote")
 
+class VideoPlayerHandler(Handler):
+    def get(self):
+      video_file = self.request.get("video")
+      self.render("vplayer.html",video_file=video_file)
 
 class TestHandler(Handler):
     def get(self):

@@ -1,0 +1,27 @@
+{% extends "public-base.html" %}
+
+{% block head %}
+    <title>Video Player</title>
+    <link href="/static/css/video-js.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+
+<video id="video" class="video-js vjs-default-skin" 
+    controls preload="auto" width="720" height="450"
+    data-setup='{"example_option":true}'>
+
+<source src="{{ video_file }}" type='video/mp4'/>
+<p class="vjs-no-js">
+    To view this video please enable JavaScript, 
+    and consider upgrading to a web browser that 
+    supports HTML5 video
+</p>
+</video>
+
+<script src="/static/js/video.js"></script>
+<script>
+  videojs.options.flash.swf = "/static/js/video-js.swf"
+</script>
+{% endblock %}
