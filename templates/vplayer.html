@@ -2,15 +2,17 @@
 
 {% block head %}
     <title>Video Player</title>
-    <link href="/static/css/video-js.css" rel="stylesheet">
+    <link href="/static/video-js/video-js.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 
 
-<video id="video" class="video-js vjs-default-skin" 
-    controls preload="auto" width="720" height="450"
-    data-setup='{"example_option":true}'>
+<div>{{ video_file }}</div>
+
+<video id="video" class="video-js vjs-default-skin video-box" 
+controls preload="auto"/> 
+<!-- data-setup='{"example_option":true} -->
 
 <source src="{{ video_file }}" type='video/mp4'/>
 <p class="vjs-no-js">
@@ -18,9 +20,10 @@
     and consider upgrading to a web browser that 
     supports HTML5 video
 </p>
+<track kind="captions" src="{{ video_file }}.vtt" srclang="en" label="English" default>
 </video>
 
-<script src="/static/js/video.js"></script>
+<script src="/static/video-js/video-js.js"></script>
 <script>
   videojs.options.flash.swf = "/static/js/video-js.swf"
 </script>

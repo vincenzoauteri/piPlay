@@ -40,6 +40,8 @@ routes = [
     ('/', FrontPageHandler),
     ('/explorer',ExplorerHandler),
     ('/player',VideoPlayerHandler),
+    ('/piplay',PiPlayerHandler),
+    ('/live',LivePlayerHandler),
     ('/remote',RemoteHandler)
     ]
 

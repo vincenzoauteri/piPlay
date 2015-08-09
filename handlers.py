@@ -19,17 +19,26 @@ jinja_env = jinja2.Environment(
         autoescape=True, loader = jinja2.FileSystemLoader(
             os.path.join(os.path.dirname(__file__), 'templates')))
 
-def is_video(path):
-    res = False
-    try:
-        ext=path[-3:]
-    except:
-        pass
-    if ext in ["avi","mp4","mpg","mkv"] : 
-      res = True
 
+def is_video(path):
+    #logging.error("is_video?:" + path)
+    res = False
+
+    try:
+        if os.path.isfile(path) :
+            _,file_ext = os.path.splitext(path)
+            #logging.error('file_name' + file_name + "file_ext" +  file_ext)
+
+            if file_ext in [".avi",".mp4",".mpg",".mkv"] : 
+                res = True
+    except:
+        logging.error("excepion:" + str(error))
+        pass
+
+    logging.error("res:" + str(res))
     return res 
-    
+
+
 
 #General 
 def render_str(template, **params):
@@ -87,50 +96,82 @@ class FrontPageHandler(Handler):
         self.render_front()
 
 
-class ExplorerHandler(Handler):
-    def get(self):
-        local_path = urllib.url2pathname(self.request.get("path"))
+class PiPlayerHandler(Handler):
+    def post(self):
+        try:
+            local_path = urllib.url2pathname(self.request.get("path")) 
+            logging.error("piplay:"+ local_path)
+            os_path="".join([os.path.dirname(__file__),'/',local_path])
+            logging.error("piplay:"+ os_path)
+            if is_video(os_path) : 
+                logging.error("isvideo")
+                player.start(os_path)
+                self.redirect("/remote");
+            else :
+                self.redirect("/explorer");
+        except:
+            logging.error("except:"+str(error))
+            self.redirect("/explorer")
 
-        logging.error(local_path)
+class ExplorerHandler(Handler):
+
+    def get(self):
+        self.post()
+
+    def post(self):
+
+        logging.error("post")
+        local_path = urllib.url2pathname(self.request.get("path")) 
+
+
         if local_path == '' :
-            local_path = "videos/"
+            local_path = "videos"
+
+        logging.error("local_path:"+ local_path)
 
         try:
-            os_path=os.path.join(os.path.dirname(__file__),local_path)
-            logging.error(os_path)
-            file_path =  os_path[:-1]
-            if os.path.isfile(file_path) is True:
-                logging.error("isfile!")
-                if is_video(file_path) is True:
-                    #self.redirect(file_path)
-                    player.start(file_path)
-                    self.render("remote.html");
-                    return   
+            #Gets the absolute path of the requested file/dir
+            os_path="".join([os.path.dirname(__file__),'/',local_path])
+            logging.error("os_path:"+ os_path)
 
-            if re.search("videos",os_path) <= 0:
-                os_path=os.path.join(os.path.dirname(__file__),"videos")
+            if os.path.isdir(os_path):
+                logging.error("isdir")
+                #gets list of files and directories in the path
+                file_list = os.listdir(os_path)
 
-            file_list = os.listdir(os_path)
+                #Filters directories
+                dir_list = sorted([item for item in file_list if os.path.isdir("".join([os_path,'/',item]))])
+                dir_list = ['../'] + dir_list
+                dir_full_path   = [urllib.pathname2url(local_path+'/'+item) for item in dir_list]
+                logging.error("dir_full_path:"+str(dir_full_path))
+
+                #Filters video files
+                video_list = sorted([item for item in file_list if is_video("".join([os_path,'/',item]))])
+                video_full_path = [urllib.pathname2url(local_path+'/'+item) for item in video_list]
+                logging.error("video_full_path:"+str(video_full_path))
 
 
-            dir_list = sorted([item for item in file_list if os.path.isdir("".join([os_path,'/',item]))])
-            dir_list = ['..'] + dir_list
-            
-            video_list = sorted([item for item in file_list if is_video(item)])
+                dir_tup   = zip(dir_list,dir_full_path)
+                video_tup = zip(video_list,video_full_path)
+
+                self.render("explorer.html",dir_tup=dir_tup,video_tup=video_tup)
+                #If path is a directory, further drills down the path
+            else:
+                logging.error("else")
+                self.redirect("/explorer")
+
 
         except Exception,error:
             logging.error("excepion:" + str(error))
             self.redirect("explorer")
             return
+            
 
 
-        video_full_path = [(urllib.pathname2url(local_path+item)) for item in video_list]
-        dir_full_path   = [(urllib.pathname2url(local_path+item)) for item in dir_list]
+            
 
-        dir_tup   = zip(dir_list,dir_full_path)
-        video_tup = zip(video_list,video_full_path)
 
-        self.render("explorer.html",dir_tup=dir_tup,video_tup=video_tup)
+
 
 class RemoteHandler(Handler):
     def get(self):
@@ -170,9 +211,13 @@ class RemoteHandler(Handler):
       self.redirect("/remote")
 
 class VideoPlayerHandler(Handler):
-    def get(self):
+    def post(self):
       video_file = self.request.get("video")
       self.render("vplayer.html",video_file=video_file)
+
+class LivePlayerHandler(Handler):
+    def get(self):
+      self.render("live.html")
 
 class TestHandler(Handler):
     def get(self):

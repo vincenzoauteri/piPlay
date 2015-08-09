@@ -6,34 +6,57 @@
 
 {% block content %}
 
-<ul class="list-group">
-{% for item in dir_tup %}
-    <li class="list-group-item tall-item">
-        <span class="glyphicon glyphicon-folder-open pull-left"></span>
-        <a  href="/explorer?path={{ item[1] }}/">    {{ item[0] }}</a>
-    </li>
-{% endfor %}
-</ul>
+
+  {% for item in dir_tup %}
+  <div class="flx" style="flex-direction:row;">
+
+
+  <form action="/explorer"  method="POST" enctype="multipart/form-data">             
+    <button class="btn btn-default" style="flex-grow:1;" type="submit" name="path" value="{{ item[1] }}">
+    <span class="glyphicon glyphicon-folder-open"> </span> 
+      {{ item[0] }}
+    </button> 
+  </form>
+
+  </div>
+  {% endfor %}
+
+
 
 </br>
 
-<ul class="list-group">
-{% for item in video_tup %}
-    <li class="list-group-item tall-item">
-        <span class="glyphicon glyphicon-film pull-left"></span>
-        <a  href="/explorer?path={{ item[1] }}/">    {{ item[0] }}</a>
-    </li>
-{% endfor %}
+  {% for item in video_tup %}
+  <div class="flx"  style="flex-direction:row;">
+
+  <div>
+    <form action="/piplay" method="POST" enctype="multipart/form-data">             
+      <button class="btn btn-default" type="submit" name="path" value="{{ item[1] }}">
+        <span class="glyphicon glyphicon-film"></span>
+        Local Stream
+      </button>
+    </form>
+  </div>
+
+  <div>
+
+    <form action="/player" method="POST" enctype="multipart/form-data">             
+      <button class="btn btn-default" type="submit" name="video" value="/{{ item[1] }}">
+        <span class="glyphicon glyphicon-film"></span>
+        Web Stream
+      </button>
+    </form>
+  </div>
+
+  <div style="flex-grow:1;align-self:center">{{ item[0] }}</div>
+
+
+  </div>
+  </br>
+  {% endfor %}
+
 </ul>
 
 
-<ul class="list-group">
-{% for item in video_tup %}
-    <li class="list-group-item tall-item">
-        <span class="glyphicon glyphicon-film pull-left"></span>
-        <a  href="/player?video=/{{ item[1] }}">    {{ item[0] }}</a>
-    </li>
-{% endfor %}
-</ul>
+
 
 {% endblock %}

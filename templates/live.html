@@ -1,0 +1,124 @@
+{% extends "public-base.html" %}
+
+{% block head %}
+    <title>Video Player</title>
+    <link href="/static/css/video-js.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="video-box"> 
+    <video id="live_player-high" class="video-js vjs-default-skin" 
+    controls preload="auto" width="480" height="270"/> 
+    <!-- data-setup='{"example_option":true} -->
+
+    <source src="" type='video/mp4'/>
+    <p class="vjs-no-js">
+    To view this video please enable JavaScript, 
+    and consider upgrading to a web browser that 
+    supports HTML5 video
+    </p>
+    </video>
+</div>
+
+<div class="video-box"> 
+    <video id="live_player-mid" class="video-js vjs-default-skin" 
+    controls preload="auto" width="480" height="270"/> 
+    <!-- data-setup='{"example_option":true} -->
+
+    <source src="" type='video/mp4'/>
+    <p class="vjs-no-js">
+    To view this video please enable JavaScript, 
+    and consider upgrading to a web browser that 
+    supports HTML5 video
+    </p>
+    </video>
+</div>
+
+<div class="video-box"> 
+    <video id="live_player-low" class="video-js vjs-default-skin" 
+    controls preload="auto" width="480" height="270"/> 
+    <!-- data-setup='{"example_option":true} -->
+
+    <source src="" type='video/mp4'/>
+    <p class="vjs-no-js">
+    To view this video please enable JavaScript, 
+    and consider upgrading to a web browser that 
+    supports HTML5 video
+    </p>
+    </video>
+</div>
+
+<script src="/static/js/video.js"></script>
+<script src="/static/js/sprintf.min.js"></script>
+<script>
+  videojs.options.flash.swf = "/static/js/video-js.swf"
+
+  var livePlayerHigh = videojs('live_player-high');
+  var livePlayerMid = videojs('live_player-mid');
+  var livePlayerLow = videojs('live_player-low');
+
+  var nplayh = 0;
+  var nplaym = 0;
+  var nplayl = 0;
+
+  sourceHigh = sprintf("/videos/high%03d.mp4",nplayh);
+  sourceMid = sprintf("/videos/mid%03d.mp4",nplaym);
+  sourceLow = sprintf("/videos/low%03d.mp4",nplayl);
+
+  livePlayerHigh.src(sourceHigh)
+  livePlayerHigh.controls(false);
+  livePlayerMid.src(sourceMid)
+  livePlayerMid.controls(false);
+  livePlayerLow.src(sourceLow)
+  livePlayerLow.controls(false);
+
+  livePlayerHigh.ready(function() {
+      console.log("ready!");
+      this.play();
+  });
+  livePlayerMid.ready(function() {
+      console.log("ready!");
+      this.play();
+  });
+  livePlayerLow.ready(function() {
+      console.log("ready!");
+      this.play();
+  });
+
+
+  livePlayerHigh.on("ended",function() {
+      nplayh=nplayh+1;
+      if (nplayh == 3) {
+          nplayh=0;
+      }
+      source = sprintf("/videos/high%03d.mp4",nplayh);
+      console.log(source)
+      this.src(source)
+      this.play();
+  });
+
+  livePlayerMid.on("ended",function() {
+      nplaym=nplaym+1;
+      if (nplaym == 3) {
+          nplaym=0;
+      }
+      source = sprintf("/videos/mid%03d.mp4",nplaym);
+      console.log(source)
+      this.src(source)
+      this.play();
+  });
+
+  livePlayerLow.on("ended",function() {
+      nplayl=nplayl+1;
+      if (nplayl == 3) {
+          nplayl=0;
+      }
+      source = sprintf("/videos/low%03d.mp4",nplayl);
+      console.log(source)
+      this.src(source)
+      this.play();
+  });
+</script>
+{% endblock %}
